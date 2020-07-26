@@ -38,37 +38,92 @@
 
     <script>
       $(document).ready(function(){
-        var workArray =[{hour: "9AM", textA: "text 9"}, {hour: "10AM", textA: "text 10"}]
-
-
-        //get the current date, formatt and display
+        const workdayHours = 9;
+        const workStartHour = 8;
+        var workArray =[];
         var m = moment();
-        var today = m.format("dddd, MMMM Do YYYY")
-        console.log(today);
-        $("#currentDay").text(today);
+        var today = m.format("dddd, MMMM Do YYYY");
+        
+
+        function createEmptyCal(){
+          for (let i = 0; i < workdayHours; i++) {
+            var workHour = {hour: (workStartHour + i),
+                          index: i,
+                          text: ""
+                          };
+            workArray.push(workHour);
+          };
+        }
+
 
         //for each hour, create a row, using Array to fill text area
-        for (let i = 0; i < workArray.length; i++) {
-          var timeBlock = $("<div class='time-block past'>");
-          var row = $("<div class='row'>");
+        function displayCal(){
+          for (let i = 0; i < workArray.length; i++) {
+            var timeBlock = $("<div class='time-block past'>");
+            var row = $("<div class='row'>");
+            row.attr("data-index", i);
 
-          //time button
-          var timeBtn = $("<button class='hour col-md-1'>").text(workArray[i].hour);
-          row.append(timeBtn);
+            //time button
+            var timeBtn = $("<button class='hour col-md-1'>").text(workArray[i].hour);
+            timeBtn.attr("data-index", i);
+            row.append(timeBtn);
 
-          //text area
-          var textArea = $("<textarea class='textarea col-md-10'>").text(workArray[i].textA);
-          row.append(textArea);
+            //text area
+            var textArea = $("<textarea class='textarea col-md-10'>").text(workArray[i].text);
+            textArea.attr("data-index", i);
+            textArea.attr("id", "text"+i);
+            row.append(textArea);
 
-          //save button
-          var saveBtn = $("<button class='saveBtn col-md-1'>").text("save");
-          row.append(saveBtn);
+            //save button
+            var saveBtn = $("<button class='saveBtn col-md-1'>").text("save");
+            saveBtn.attr("data-index", i);
+            row.append(saveBtn);
 
-          timeBlock.append(row);
-          $(".container").append(timeBlock)
+            //set class based on time*************************************************
+    console.log(workArray[i].hour);
+            var rowTime = moment(workArray[i].hour, "ha").isValid();
+            var currHour = m.format("hha");
+    console.log(rowTime + " ---- " + currHour);
+                       
+
+            timeBlock.append(row);
+            $(".container").append(timeBlock);
+        } }
+
+        //display start calendar from stored or new
+        function runCal(){
+            //get current time and display date
+            m = moment();
+            today = m.format("dddd, MMMM Do YYYY");
+            $("#currentDay").text(today);
+
+            //get stored array if there
+            storedWork = JSON.parse(localStorage.getItem("workArray"));
+            if(storedWork !== null){
+              workArray = storedWork;
+            }else{
+              createEmptyCal();
+            }
+
+            displayCal();
+          } 
+        
+        function updateCal(){
+          //get text from row and store in array
+          var index = $(this).attr("data-index");
+  console.log(index);
+          var task = $("#text"+index).val().trim(); 
+  console.log(task);
+          workArray[index].text = $("#text"+index).val().trim();
+  console.log(workArray[index].text);
         }
-      
 
+        //event listener for saveBtn
+        $(document).on("click", ".saveBtn", updateCal);
+
+
+        runCal();
+        
       }); //end Doc ready statement
     </script>
   </body>
