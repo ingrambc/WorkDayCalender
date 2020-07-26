@@ -53,15 +53,15 @@
           var row = $("<div class='row'>");
 
           //time button
-          var timeBtn = $("<button class='hour'>").text(workArray[i].hour);
+          var timeBtn = $("<button class='hour col-md-1'>").text(workArray[i].hour);
           row.append(timeBtn);
 
           //text area
-          var textArea = $("<textarea class='textarea'>").text(workArray[i].textA);
+          var textArea = $("<textarea class='textarea col-md-10'>").text(workArray[i].textA);
           row.append(textArea);
 
           //save button
-          var saveBtn = $("<button class='saveBtn'>").text("ui-icon ui-icon-disk");
+          var saveBtn = $("<button class='saveBtn col-md-1'>").text("save");
           row.append(saveBtn);
 
           timeBlock.append(row);
