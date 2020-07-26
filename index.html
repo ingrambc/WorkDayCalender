@@ -46,9 +46,9 @@
         
 
         function createEmptyCal(){
+          workArray = [];
           for (let i = 0; i < workdayHours; i++) {
             var workHour = {hour: (workStartHour + i),
-                          index: i,
                           text: ""
                           };
             workArray.push(workHour);
@@ -58,6 +58,9 @@
 
         //for each hour, create a row, using Array to fill text area
         function displayCal(){
+          //clear existing cal
+          $(".container").empty();
+
           for (let i = 0; i < workArray.length; i++) {
             var timeBlock = $("<div class='time-block past'>");
             var row = $("<div class='row'>");
@@ -75,15 +78,16 @@
             row.append(textArea);
 
             //save button
-            var saveBtn = $("<button class='saveBtn col-md-1'>").text("save");
+            var saveBtn = $("<button class='saveBtn col-md-1'>");
             saveBtn.attr("data-index", i);
+            saveBtn.html("<i class='fa fa-save'></i>");
             row.append(saveBtn);
 
             //set class based on time*************************************************
-    console.log(workArray[i].hour);
-            var rowTime = moment(workArray[i].hour, "ha").isValid();
-            var currHour = m.format("hha");
-    console.log(rowTime + " ---- " + currHour);
+  //  console.log(workArray[i].hour);
+  //          var rowTime = moment(workArray[i].hour, "ha").isValid();
+  //          var currHour = m.format("hha");
+  //  console.log(rowTime + " ---- " + currHour);
                        
 
             timeBlock.append(row);
@@ -111,11 +115,13 @@
         function updateCal(){
           //get text from row and store in array
           var index = $(this).attr("data-index");
-  console.log(index);
-          var task = $("#text"+index).val().trim(); 
-  console.log(task);
           workArray[index].text = $("#text"+index).val().trim();
-  console.log(workArray[index].text);
+
+          //store array locally
+          localStorage.setItem("workArray", JSON.stringify(workArray));
+
+          //reset calandaer
+          runCal();
         }
 
         //event listener for saveBtn
