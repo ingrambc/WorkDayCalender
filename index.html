@@ -30,7 +30,6 @@
     </header>
     <div class="container">
       <!-- Timeblocks go here -->
-    
     </div>
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -40,11 +39,12 @@
       $(document).ready(function(){
         const workdayHours = 9;
         const workStartHour = "8am";
+        const refreshMins = 1;
         var workArray =[];
         var m = moment();
         var today = m.format("dddd, MMMM Do YYYY");
         
-
+        //creates and empty cal
         function createEmptyCal(){
           workArray = [];
           for (let i = 0; i < workdayHours; i++) {
@@ -54,7 +54,6 @@
             workArray.push(workHour);
           };
         }
-
 
         //for each hour, create a row, using Array to fill text area
         function displayCal(){
@@ -85,16 +84,13 @@
             saveBtn.html("<i class='fa fa-save'></i>");
             row.append(saveBtn);
 
-            //set class based on time*************************************************
-            if(curHour.isBefore(m)){
-      console.log(i +" is before");
+            //set class based on time
+            if(curHour.hour() < m.hour()){
               timeBtn.addClass("past");
-            }else if(curHour.isAfter(m)){
-      console.log(i + " is after");
+            }else if(curHour.hour() > m.hour()){
               timeBlock.addClass("future");
             }else{
-      console.log(i + " is now");
-              timeBlock.addClass("present");
+               timeBlock.addClass("present");
             }
                        
             //add to document
@@ -132,10 +128,18 @@
           runCal();
         }
 
+        //start timer for 5 min updates
+        function startTimer(){
+          var timer = setInterval(function(){
+            runCal();
+          }, (refreshMins*60000));
+        }
+          
         //event listener for saveBtn
         $(document).on("click", ".saveBtn", updateCal);
 
-
+        //start calander aplication
+        startTimer();
         runCal();
         
       }); //end Doc ready statement
