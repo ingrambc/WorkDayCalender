@@ -30,26 +30,46 @@
     </header>
     <div class="container">
       <!-- Timeblocks go here -->
-      <div class="input-group input-group-lg mb-3">
-        <div class="input-group-prepend">
-          <span class="input-group-text" id="inputGroup-sizing-lg">Large</span>
-        </div>
-        <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">
-        <div class="input-group-append">
-          <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
-        </div>
-      </div>
-
-
-
+    
     </div>
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 
     <script>
+      $(document).ready(function(){
+        var workArray =[{hour: "9AM", textA: "text 9"}, {hour: "10AM", textA: "text 10"}]
 
 
+        //get the current date, formatt and display
+        var m = moment();
+        var today = m.format("dddd, MMMM Do YYYY")
+        console.log(today);
+        $("#currentDay").text(today);
+
+        //for each hour, create a row, using Array to fill text area
+        for (let i = 0; i < workArray.length; i++) {
+          var timeBlock = $("<div class='time-block past'>");
+          var row = $("<div class='row'>");
+
+          //time button
+          var timeBtn = $("<button class='hour'>").text(workArray[i].hour);
+          row.append(timeBtn);
+
+          //text area
+          var textArea = $("<textarea class='textarea'>").text(workArray[i].textA);
+          row.append(textArea);
+
+          //save button
+          var saveBtn = $("<button class='saveBtn'>").text("ui-icon ui-icon-disk");
+          row.append(saveBtn);
+
+          timeBlock.append(row);
+          $(".container").append(timeBlock)
+        }
+      
+
+      }); //end Doc ready statement
     </script>
   </body>
 </html>
