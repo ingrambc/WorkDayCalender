@@ -73,10 +73,16 @@
             row.append(timeBtn);
 
             //text area
-            var textArea = $("<textarea class='textarea col-md-10'>").text(workArray[i].text);
+            var textArea = $("<textarea class='textarea col-md-9'>").text(workArray[i].text);
             textArea.attr("data-index", i);
             textArea.attr("id", "text"+i);
             row.append(textArea);
+
+            //erase button
+            var eraseBtn = $("<button class = 'eraseBtn col-md-1'>")
+            eraseBtn.attr("data-index", i);
+            eraseBtn.html("<i class='fa fa-eraser'></i>")
+            row.append(eraseBtn);
 
             //save button
             var saveBtn = $("<button class='saveBtn col-md-1'>");
@@ -128,6 +134,17 @@
           runCal();
         }
 
+        function eraseCal(){
+          var index = $(this).attr("data-index");
+          workArray[index].text = "";
+
+          //store array locally
+          localStorage.setItem("workArray", JSON.stringify(workArray));
+
+          //reset calandaer
+          runCal();
+        }
+       
         //start timer for 5 min updates
         function startTimer(){
           var timer = setInterval(function(){
@@ -135,8 +152,9 @@
           }, (refreshMins*60000));
         }
           
-        //event listener for saveBtn
+        //event listener for Buttons
         $(document).on("click", ".saveBtn", updateCal);
+        $(document).on("click", ".eraseBtn", eraseCal);
 
         //start calander aplication
         startTimer();
