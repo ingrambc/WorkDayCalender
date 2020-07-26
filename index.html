@@ -39,7 +39,7 @@
     <script>
       $(document).ready(function(){
         const workdayHours = 9;
-        const workStartHour = 8;
+        const workStartHour = "8am";
         var workArray =[];
         var m = moment();
         var today = m.format("dddd, MMMM Do YYYY");
@@ -60,14 +60,16 @@
         function displayCal(){
           //clear existing cal
           $(".container").empty();
-
+          
           for (let i = 0; i < workArray.length; i++) {
             var timeBlock = $("<div class='time-block past'>");
             var row = $("<div class='row'>");
             row.attr("data-index", i);
 
             //time button
-            var timeBtn = $("<button class='hour col-md-1'>").text(workArray[i].hour);
+            curHour = moment(workStartHour, "ha");
+            curHour.add(i,"hour");
+            var timeBtn = $("<button class='hour col-md-1'>").text(curHour.format("hA"));
             timeBtn.attr("data-index", i);
             row.append(timeBtn);
 
@@ -84,12 +86,18 @@
             row.append(saveBtn);
 
             //set class based on time*************************************************
-  //  console.log(workArray[i].hour);
-  //          var rowTime = moment(workArray[i].hour, "ha").isValid();
-  //          var currHour = m.format("hha");
-  //  console.log(rowTime + " ---- " + currHour);
+            if(curHour.isBefore(m)){
+      console.log(i +" is before");
+              timeBtn.addClass("past");
+            }else if(curHour.isAfter(m)){
+      console.log(i + " is after");
+              timeBlock.addClass("future");
+            }else{
+      console.log(i + " is now");
+              timeBlock.addClass("present");
+            }
                        
-
+            //add to document
             timeBlock.append(row);
             $(".container").append(timeBlock);
         } }
