@@ -122,6 +122,7 @@
             displayCal();
           } 
         
+        //updaes row in local storage
         function updateCal(){
           //get text from row and store in array
           var index = $(this).attr("data-index");
@@ -134,6 +135,7 @@
           runCal();
         }
 
+        //removes text for row in local storage
         function eraseCal(){
           var index = $(this).attr("data-index");
           workArray[index].text = "";
