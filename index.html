@@ -48,9 +48,7 @@
         function createEmptyCal(){
           workArray = [];
           for (let i = 0; i < workdayHours; i++) {
-            var workHour = {hour: (workStartHour + i),
-                          text: ""
-                          };
+            var workHour = "";
             workArray.push(workHour);
           };
         }
@@ -73,7 +71,7 @@
             row.append(timeBtn);
 
             //text area
-            var textArea = $("<textarea class='textarea col-md-9'>").text(workArray[i].text);
+            var textArea = $("<textarea class='textarea col-md-9'>").text(workArray[i]);
             textArea.attr("data-index", i);
             textArea.attr("id", "text"+i);
             row.append(textArea);
@@ -126,7 +124,7 @@
         function updateCal(){
           //get text from row and store in array
           var index = $(this).attr("data-index");
-          workArray[index].text = $("#text"+index).val().trim();
+          workArray[index] = $("#text"+index).val().trim();
 
           //store array locally
           localStorage.setItem("workArray", JSON.stringify(workArray));
@@ -138,7 +136,7 @@
         //removes text for row in local storage
         function eraseCal(){
           var index = $(this).attr("data-index");
-          workArray[index].text = "";
+          workArray[index] = "";
 
           //store array locally
           localStorage.setItem("workArray", JSON.stringify(workArray));
